@@ -33,13 +33,29 @@ public class Island {
                     if (list.size() > 1) { // в одной клетке 2 животных
                         Animal animal1 = list.get(0);
                         Animal animal2 = list.get(1);
+                        Animal newBornAnimal = null;
                         if (animal1.getClass().getName().equals(animal2.getClass().getName())) {
                             // если одинаковые животные, то рождается новое животное
-                            Animal newAnimal = new Animal(i, j, animal1.getName() + animal2.getName(),
-                                    animal1.getColor(), 10);
-                            list.add(newAnimal);
-                            System.out.println("Родилось новое животное");
-                            return newAnimal;
+
+                            if (animal1 instanceof swimmableAnimal) {
+                                /*newBornAnimal = AnimalFactory.createAnimal(Animals.walkableAnimal, i, j, animal1.getName() + animal2.getName(),
+                                        animal1.getColor());*/
+                                newBornAnimal = new swimmableAnimal(i, j, animal1.getName() + animal2.getName(),
+                                        animal1.getColor(), 10);
+                            } else if (animal1 instanceof walkableAnimal) {
+                                newBornAnimal = new walkableAnimal(i, j, animal1.getName() + animal2.getName(),
+                                        animal1.getColor(), 10);
+                            } else if (animal1 instanceof flyableAnimal) {
+                                newBornAnimal = new flyableAnimal(i, j, animal1.getName() + animal2.getName(),
+                                        animal1.getColor(), 10);
+                            } else {
+                                newBornAnimal = null;
+                            }
+                            list.add(newBornAnimal);
+                            if (newBornAnimal != null) {
+                                System.out.println("Родилось новое животное класса " + newBornAnimal.getClass().getName());
+                            }
+                            return newBornAnimal;
 
                         } else if (animal1.getSize() > animal2.getSize()) {
                             animal1.eat(animal2);
@@ -50,7 +66,6 @@ public class Island {
                             list.remove(animal1);
                             return animal1;
                         }
-
                     }
                 }
             }
@@ -58,6 +73,26 @@ public class Island {
         return null;
     }
 
+ /*   public enum Animals {
+        walkableAnimal,
+        swimmableanimal,
+        flyableanimal
+    }
+
+    public static class AnimalFactory {
+        public static Animal createAnimal(Animals animal, int i, int j, String name, String color) {
+            switch (animal) {
+                case walkableAnimal:
+                    return new walkableAnimal(i, j, name, color, 10);
+                case flyableanimal:
+                    return new flyableAnimal(i, j, name, color, 10);
+                case swimmableanimal:
+                    return new swimmableAnimal(i, j, name, color, 10);
+                default:
+                    return null;
+            }
+        }
+    }*/
 
     public int getWidth() {
         return width;
@@ -82,4 +117,6 @@ public class Island {
     public void setField(Cell[][] field) {
         this.field = field;
     }
+
 }
+

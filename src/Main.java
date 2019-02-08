@@ -1,7 +1,4 @@
-import interfaces.Walkable;
-
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by Andrey on 04.02.2019.
@@ -27,9 +24,12 @@ public class Main {
         int i = 0;
         while (i < 10) {
             islandHTL.setAnimals(animalList);
-            animalList.remove(islandHTL.checkCells());
-            //animalList.get(0).move(1, -2, islandHTL);
-            // animalList.get(1).move(sign(), sign(), islandHTL);
+            Animal animal = islandHTL.checkCells();
+            if (animalList.contains(animal)) {
+                animalList.remove(animal);
+            } else if (animal != null) {
+                animalList.add(animal);
+            }
             animalList.forEach(x -> x.move(sign(), sign(), islandHTL));
             i++;
         }
