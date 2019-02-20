@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Andrey on 04.02.2019.
@@ -12,24 +13,21 @@ public class Main {
 
         Island islandHTL = new Island(width, length);
 
-        Animal swim = new swimmableAnimal(0, 0, "KvaKva", "green", 10);
-        Animal walk = new walkableAnimal(1, 1, "MuMu", "brown", 20);
-        Animal fly = new flyableAnimal(2, 2, "KarKar", "black", 30);
-        Animal fly2 = new flyableAnimal(0, 0, "ChirikChirik", "black", 20);
-        ArrayList<Animal> animalList = new ArrayList<>();
+        Animal swim = new swimmableAnimal(0, 0, "KvaKva1", "green", 10);
+        Animal swim2 = new swimmableAnimal(0, 0, "KvaKva2", "green", 10);
+        Animal walk = new walkableAnimal(0, 1, "MuMu", "brown", 20);
+        Animal fly = new flyableAnimal(0, 1, "KarKar", "black", 30);
+        Animal fly2 = new flyableAnimal(2, 1, "ChirikChirik", "black", 20);
+        List<Animal> animalList = new ArrayList<>();
         animalList.add(swim);
+        animalList.add(swim2);
         animalList.add(walk);
         animalList.add(fly);
         animalList.add(fly2);
         int i = 0;
         while (i < 10) {
             islandHTL.setAnimals(animalList);
-            Animal animal = islandHTL.checkCells();
-            if (animalList.contains(animal)) {
-                animalList.remove(animal);
-            } else if (animal != null) {
-                animalList.add(animal);
-            }
+            animalList = islandHTL.checkCells();
             animalList.forEach(x -> x.move(sign(), sign(), islandHTL));
             i++;
         }

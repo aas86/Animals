@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Island {
     private int width;
@@ -12,7 +13,7 @@ public class Island {
         this.field = new Cell[width][length];
     }
 
-    public void setAnimals(ArrayList<Animal> animalList) {
+    public void setAnimals(List<Animal> animalList) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < length; j++) {
                 field[i][j] = new Cell(i, j);
@@ -25,11 +26,13 @@ public class Island {
         animalCount = animalList.size();
     }
 
-    public Animal checkCells() {
+    public List<Animal> checkCells() {
+        List<Animal> animalListToReturn = new ArrayList<>();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < length; j++) {
                 if (!field[i][j].isEmpty()) {
                     ArrayList<Animal> list = field[i][j].getAnimalList();
+                    animalListToReturn.addAll(list);
                     if (list.size() > 1) { // в одной клетке 2 животных
                         Animal animal1 = list.get(0);
                         Animal animal2 = list.get(1);
@@ -40,8 +43,10 @@ public class Island {
                             if (animal1 instanceof swimmableAnimal) {
                                 /*newBornAnimal = AnimalFactory.createAnimal(Animals.walkableAnimal, i, j, animal1.getName() + animal2.getName(),
                                         animal1.getColor());*/
-                                newBornAnimal = new swimmableAnimal(i, j, animal1.getName() + animal2.getName(),
-                                        animal1.getColor(), 10);
+                                newBornAnimal = AnimalFactory.createAnimal(Animals.swimmableanimal,
+                                        i, j, animal1.getName() + animal2.getName(), animal1.getColor());
+                               /* newBornAnimal = new swimmableAnimal(i, j, animal1.getName() + animal2.getName(),
+                                        animal1.getColor(), 10);*/
                             } else if (animal1 instanceof walkableAnimal) {
                                 newBornAnimal = new walkableAnimal(i, j, animal1.getName() + animal2.getName(),
                                         animal1.getColor(), 10);
@@ -51,29 +56,27 @@ public class Island {
                             } else {
                                 newBornAnimal = null;
                             }
-                            list.add(newBornAnimal);
+                            //list.add(newBornAnimal);
                             if (newBornAnimal != null) {
                                 System.out.println("Родилось новое животное класса " + newBornAnimal.getClass().getName());
                             }
-                            return newBornAnimal;
-
+                            animalListToReturn.add(newBornAnimal);
                         } else if (animal1.getSize() > animal2.getSize()) {
                             animal1.eat(animal2);
-                            list.remove(animal2);
-                            return animal2;
+                            animalListToReturn.remove(animal2);
                         } else {
                             animal2.eat(animal1);
-                            list.remove(animal1);
-                            return animal1;
+                            animalListToReturn.remove(animal1);
                         }
                     }
                 }
             }
         }
-        return null;
+        //return null;
+        return animalListToReturn;
     }
 
- /*   public enum Animals {
+    public enum Animals {
         walkableAnimal,
         swimmableanimal,
         flyableanimal
@@ -92,7 +95,7 @@ public class Island {
                     return null;
             }
         }
-    }*/
+    }
 
     public int getWidth() {
         return width;
